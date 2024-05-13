@@ -1,0 +1,12 @@
+{% extends 'client/base.html' %}
+
+{% block title %}Request Property Viewing{% endblock %}
+
+{% block content %}
+    <h1>Request Property Viewing</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send Request</button>
+    </form>
+{% endblock %}

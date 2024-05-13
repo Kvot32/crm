@@ -1,0 +1,53 @@
+{% extends 'profile/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Профиль пользователя</div>
+                    <div class="card-body">
+                        {% if user.is_authenticated %}
+                            <h5 class="card-title">Детали профиля</h5>
+                            <p class="card-text"><strong>Имя пользователя:</strong> {{ profile.user.username }}</p>
+                            <p class="card-text"><strong>Email:</strong> {{ user.profile.email }}</p>
+                            <p class="card-text"><strong>Имя:</strong> {{ user.profile.first_name }}</p>
+                            <p class="card-text"><strong>Фамилия:</strong> {{ user.profile.last_name }}</p>
+                            <div class="mt-4">
+                                <a href="{% url 'property:property_list' %}" class="btn btn-primary">Список
+                                    недвижимости</a>
+                                <a href="{% url 'client:create_interaction' %}" class="btn btn-primary">Создать
+                                    заявку</a>
+                                <a href="{% url 'profile:profile_update' pk=user.profile.pk %}"
+                                   class="btn btn-secondary">Изменить профиль</a>
+                                <a href="{% url 'profile:logout' %}" class="btn btn-danger">Выход</a>
+                            </div>
+                        {% else %}
+                            <p class="card-text">Пользователь не авторизован.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <h2>Заявки</h2>
+                <ul class="list-group">
+                    {% for interaction in interactions %}
+                        <li class="list-group-item">
+                            <a href="{% url 'client:interaction_detail' pk=interaction.pk %}">
+                                {{ interaction.profile.first_name }} - {{ interaction.date }}
+                                - {{ interaction.description }} </a>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">Нет доступных заявок</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

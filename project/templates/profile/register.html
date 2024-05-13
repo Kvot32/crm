@@ -1,0 +1,34 @@
+{% extends 'profile/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="username">Логин</label>
+                                {{ form.username }}
+                            </div>
+                            <div class="form-group">
+                                <label for="password1">Пароль</label>
+                                {{ form.password1 }}
+                            </div>
+                            <div class="form-group">
+                                <label for="password2">Повторите пароль</label>
+                                {{ form.password2 }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

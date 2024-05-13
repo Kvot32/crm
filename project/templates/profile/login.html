@@ -1,0 +1,50 @@
+{% extends 'profile/base.html' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header text-center">{{ block.super }}</div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">
+                                        {% if field.label == 'Username' %}
+                                            Имя пользователя
+                                        {% elif field.label == 'Password' %}
+                                            Пароль
+                                        {% else %}
+                                            {{ field.label_tag }}
+                                        {% endif %}
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <small class="form-text text-danger">{{ field.errors }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                        </form>
+                        <div>
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

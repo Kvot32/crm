@@ -1,0 +1,48 @@
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Property
+from .forms import PropertyForm
+
+
+def property_list(request):
+    properties = Property.objects.all()
+    return render(request, 'property/property_list.html', {'properties': properties})
+
+
+def property_detail(request, pk):
+    property = get_object_or_404(Property, pk=pk)
+    return render(request, 'property/property_detail.html', {'property': property})
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def property_create(request):
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('property:property_list')
+    else:
+        form = PropertyForm()
+    return render(request, 'property/property_form.html', {'form': form})
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def property_update(request, pk):
+    property = get_object_or_404(Property, pk=pk)
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES, instance=property)
+        if form.is_valid():
+            form.save()
+            return redirect('property:property_list')
+    else:
+        form = PropertyForm(instance=property)
+    return render(request, 'property/property_form.html', {'form': form})
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def property_delete(request, pk):
+    property = get_object_or_404(Property, pk=pk)
+    if request.method == 'POST':
+        property.delete()
+        return redirect('property:property_list')
+    return render(request, 'property/property_confirm_delete.html', {'property': property})

@@ -1,0 +1,22 @@
+{% extends 'client/base.html' %}
+
+{% block title %}Contact Detail{% endblock %}
+
+{% block content %}
+    <h1>Contact Detail</h1>
+    <p><strong>Name:</strong> {{ contact.name }}</p>
+    <p><strong>Email:</strong> {{ contact.email }}</p>
+    <p><strong>Phone:</strong> {{ contact.phone }}</p>
+    <p><strong>Notes:</strong> {{ contact.notes }}</p>
+
+    <h2>Interactions</h2>
+    <ul>
+        {% for interaction in interactions %}
+            <li><a href="{% url 'client:interaction_detail' pk=interaction.pk %}">
+                {{ interaction.contact.name }} - {{ interaction.date }} - {{ interaction.description }}
+            </a></li>
+        {% empty %}
+            <li>No interactions available</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

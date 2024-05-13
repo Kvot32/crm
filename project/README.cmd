@@ -15,7 +15,7 @@ CRM-система недвижимости - это веб-приложение
 
 1. Склонируйте репозиторий:
 
-git clone https://github.com/Kvot32/crm.git
+git clone https://github.com/Kvot32/crm/tree/master/project
 
 2. Установите зависимости:
 

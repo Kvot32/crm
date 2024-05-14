@@ -9,15 +9,16 @@ from client.models import Interaction
 from .models import Profile
 from .forms import ProfileForm
 
-
 @login_required
 def profile_detail(request, pk):
+    """Отображает детали профиля."""
     profile = Profile.objects.get(pk=pk)
     interactions = Interaction.objects.filter(profile=profile)
     return render(request, 'profile/profile.html', {'profile': profile, 'interactions': interactions})
 
 @login_required
 def profile_update(request, pk):
+    """Редактирует профиль пользователя."""
     profile = Profile.objects.get(pk=pk)
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=profile)
@@ -28,8 +29,8 @@ def profile_update(request, pk):
         form = ProfileForm(instance=profile)
     return render(request, 'profile/profile_update.html', {'form': form})
 
-
 def registration(request):
+    """Регистрация нового пользователя."""
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -47,19 +48,20 @@ def registration(request):
 
 @login_required
 def profile(request, pk):
+    """Отображает профиль пользователя."""
     user_profile = get_object_or_404(Profile, pk=pk)
     return render(request, 'profile/profile.html', {'profile': user_profile})
 
-
 class MyLogoutView(LogoutView):
+    """Пользовательское представление выхода из системы."""
     next_page = reverse_lazy("profile:logout")
     http_method_names = ['get', 'post']
 
     def get_success_url(self):
         return reverse_lazy('profile:login')
 
-
 class MyLoginView(LoginView):
+    """Пользовательское представление входа в систему."""
     template_name = 'profile/login.html'
 
     def get_success_url(self):

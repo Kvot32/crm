@@ -9,54 +9,63 @@ from profile.models import Profile
 
 @user_passes_test(lambda u: u.is_superuser)
 def interaction_list(request):
+    """
+    Возвращает список всех взаимодействий.
+    """
     interactions = Interaction.objects.select_related('profile', 'contact').all()
     paginator = Paginator(interactions, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'client/interaction_list.html', {'interactions': interactions, 'page_obj':page_obj})
+    return render(request, 'client/interaction_list.html', {'interactions': interactions, 'page_obj': page_obj})
 
 
 @user_passes_test(lambda u: u.is_authenticated)
 def interaction_detail(request, pk):
+    """
+    Возвращает детали конкретного взаимодействия.
+    """
     interaction = get_object_or_404(Interaction, pk=pk)
     return render(request, 'client/interaction_detail.html', {'interaction': interaction})
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def contact_list(request):
+    """
+    Возвращает список контактов и профилей.
+    """
     contacts = Contact.objects.all()
     profiles = Profile.objects.all()
     combined_list = list(contacts) + list(profiles)
     paginator = Paginator(combined_list, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'client/contact_list.html', {'contacts': contacts, 'profiles': profiles, 'page_obj':page_obj})
+    return render(request, 'client/contact_list.html',
+                  {'contacts': contacts, 'profiles': profiles, 'page_obj': page_obj})
 
 
 @user_passes_test(lambda u: u.is_superuser)
 def contact_detail(request, pk):
+    """
+    Возвращает детали конкретного контакта.
+    """
     contact = Contact.objects.get(pk=pk)
     interactions = Interaction.objects.filter(contact=contact)
     return render(request, 'client/contact_detail.html', {'contact': contact, 'interactions': interactions})
 
 
-# Представления для управления заявками
-
 def create_interaction(request):
+    """
+    Создает новое взаимодействие и сохраняет его в базе данных.
+    """
     if request.method == 'POST':
         form = InteractionForm(request.POST)
         if form.is_valid():
-            # Сохраняем данные из формы в объект Interaction
             interaction = form.save(commit=False)
-            # Устанавливаем профиль или контакт в зависимости от пользователя
             if request.user.profile:
                 interaction.profile = request.user.profile
             elif request.user.contacts.exists():
                 interaction.contact = request.user.contacts.first()
-            # Сохраняем объект Interaction в базу данных
             interaction.save()
-            # После успешного сохранения перенаправляем пользователя
-            # на соответствующую страницу
             if interaction.profile:
                 return redirect('profile:profile', pk=interaction.profile.pk)
             elif interaction.contact:
@@ -69,8 +78,10 @@ def create_interaction(request):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-# Представления для управления запросами на просмотр объектов
 def property_request_create(request, property_id):
+    """
+    Создает новый запрос на просмотр объекта недвижимости и сохраняет его в базе данных.
+    """
     if request.method == 'POST':
         form = PropertyRequestForm(request.POST)
         if form.is_valid():
@@ -85,8 +96,10 @@ def property_request_create(request, property_id):
 
 
 @user_passes_test(lambda u: u.is_authenticated)
-# Представление для управления обратной связью
 def feedback_create(request):
+    """
+    Создает новый отзыв и сохраняет его в базе данных.
+    """
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():

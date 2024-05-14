@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import user_passes_test
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Property
 from .forms import PropertyForm
@@ -6,7 +7,10 @@ from .forms import PropertyForm
 
 def property_list(request):
     properties = Property.objects.all()
-    return render(request, 'property/property_list.html', {'properties': properties})
+    paginator = Paginator(properties, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'property/property_list.html', {'properties': properties, 'page_obj':page_obj})
 
 
 def property_detail(request, pk):

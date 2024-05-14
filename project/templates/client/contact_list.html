@@ -6,19 +6,37 @@
     <h1>Contact List</h1>
     <ul>
         {% for contact in contacts %}
-        <li><a href="{% url 'client:contact_detail' contact.pk %}">{{ contact.name }}</a></li>
+            <li><a href="{% url 'client:contact_detail' contact.pk %}">{{ contact.name }}</a></li>
         {% empty %}
-        <li>No contacts available</li>
+            <li>No contacts available</li>
         {% endfor %}
     </ul>
     <h1>Profiles list</h1>
-        <ul>
+    <ul>
         {% for profile in profiles %}
-        <li><a href="{% url 'profile:profile' profile.pk %}">{{ profile.first_name }}</a></li>
+            <li><a href="{% url 'profile:profile' profile.pk %}">{{ profile.first_name }}</a></li>
         {% empty %}
-        <li>No contacts available</li>
+            <li>No contacts available</li>
         {% endfor %}
     </ul>
+    <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">предыдущая</a>
+        {% endif %}
+
+        <span class="current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">последняя &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
+    </div>
 {% endblock %}
 
 

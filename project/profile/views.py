@@ -7,7 +7,8 @@ from django.urls import reverse_lazy
 
 from client.models import Interaction
 from .models import Profile
-from .forms import ProfileForm
+from .forms import ProfileForm, UserCreateForms
+
 
 @login_required
 def profile_detail(request, pk):
@@ -15,6 +16,7 @@ def profile_detail(request, pk):
     profile = Profile.objects.get(pk=pk)
     interactions = Interaction.objects.filter(profile=profile)
     return render(request, 'profile/profile.html', {'profile': profile, 'interactions': interactions})
+
 
 @login_required
 def profile_update(request, pk):
@@ -29,6 +31,7 @@ def profile_update(request, pk):
         form = ProfileForm(instance=profile)
     return render(request, 'profile/profile_update.html', {'form': form})
 
+
 def registration(request):
     """Регистрация нового пользователя."""
     if request.method == 'POST':
@@ -42,15 +45,19 @@ def registration(request):
                 login(request, user)
                 profile = Profile.objects.create(user=user)
                 return redirect('profile:profile', pk=profile.pk)
+        else:
+            return render(request, 'profile/register.html', {'form': form})
     else:
         form = UserCreationForm()
     return render(request, 'profile/register.html', {'form': form})
+
 
 @login_required
 def profile(request, pk):
     """Отображает профиль пользователя."""
     user_profile = get_object_or_404(Profile, pk=pk)
     return render(request, 'profile/profile.html', {'profile': user_profile})
+
 
 class MyLogoutView(LogoutView):
     """Пользовательское представление выхода из системы."""
@@ -60,9 +67,16 @@ class MyLogoutView(LogoutView):
     def get_success_url(self):
         return reverse_lazy('profile:login')
 
-class MyLoginView(LoginView):
-    """Пользовательское представление входа в систему."""
-    template_name = 'profile/login.html'
 
-    def get_success_url(self):
-        return reverse_lazy('profile:profile', kwargs={'pk': self.request.user.profile.pk})
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('profile:profile', pk=user.profile.pk)
+        else:
+            return render(request, 'profile/login.html', {'error_message': 'Неверный логин или пароль'})
+    else:
+        return render(request, 'profile/login.html')

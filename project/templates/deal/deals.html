@@ -1,0 +1,77 @@
+{% extends 'deal/base.html' %}
+{% load static %}
+
+{% block title %}
+    Deal List
+{% endblock %}
+
+{#{% block styles %}#}
+{#    <style>#}
+{#        table {#}
+{#            width: 100%;#}
+{#            border-collapse: collapse;#}
+{#        }#}
+{##}
+{#        th, td {#}
+{#            border: 1px solid #ddd;#}
+{#            padding: 12px;#}
+{#            text-align: left;#}
+{#            font-size: 14px;#}
+{#        }#}
+{##}
+{#        th {#}
+{#            background-color: #f2f2f2;#}
+{#            font-weight: bold;#}
+{#        }#}
+{##}
+{#        tr:nth-child(even) {#}
+{#            background-color: #f9f9f9;#}
+{#        }#}
+{##}
+{#        tr:hover {#}
+{#            background-color: #f1f1f1;#}
+{#        }#}
+{##}
+{#        .actions {#}
+{#            display: flex;#}
+{#            justify-content: flex-end;#}
+{#            margin-top: 20px;#}
+{#        }#}
+{##}
+{#        .actions a {#}
+{#            margin-left: 10px;#}
+{#        }#}
+{#    </style>#}
+{#{% endblock %}#}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+{% block content %}
+    <h1>Deal List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Stage</th>
+                <th>Documents</th>
+                <th>Created By</th>
+                <th>Client</th>
+                <th>Assigned To</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for deal in deals %}
+            <tr>
+                <td>{{ deal.id }}</td>
+                <td>{{ deal.stage }}</td>
+                <td>{{ deal.documents }}</td>
+                <td>{{ deal.created_at }}</td>
+                <td>{{ deal.client }}</td>
+                <td>{{ deal.assigned_to }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

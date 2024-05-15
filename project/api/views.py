@@ -5,12 +5,14 @@ from .serializers import InteractionSerializer, ContactSerializer, FeedbackSeria
 from profile.models import Profile
 from .pagination import CustomPagination
 
+
 class FeedbackListCreateAPIView(generics.ListCreateAPIView):
     """API для создания и просмотра обратной связи."""
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
+
 
 class ProfileViewSet(viewsets.ModelViewSet):
     """API для управления профилями."""
@@ -19,12 +21,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
 
+
 class InteractionViewSet(viewsets.ModelViewSet):
-    """API для управления взаимодействиями."""
+    """API для управления заявками."""
     queryset = Interaction.objects.all()
     serializer_class = InteractionSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class ContactViewSet(viewsets.ModelViewSet):
     """API для управления контактами."""
@@ -34,3 +41,6 @@ class ContactViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['username', 'email']
     pagination_class = CustomPagination
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import user_passes_test
-from django.core import paginator
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Contact, Interaction
@@ -10,7 +9,7 @@ from profile.models import Profile
 @user_passes_test(lambda u: u.is_superuser)
 def interaction_list(request):
     """
-    Возвращает список всех взаимодействий.
+    Возвращает список всех заявок.
     """
     interactions = Interaction.objects.select_related('profile', 'contact').all()
     paginator = Paginator(interactions, 5)
@@ -19,10 +18,10 @@ def interaction_list(request):
     return render(request, 'client/interaction_list.html', {'interactions': interactions, 'page_obj': page_obj})
 
 
-@user_passes_test(lambda u: u.is_authenticated)
+@user_passes_test(lambda u: u.is_superuser)
 def interaction_detail(request, pk):
     """
-    Возвращает детали конкретного взаимодействия.
+    Возвращает детали конкретного заявок.
     """
     interaction = get_object_or_404(Interaction, pk=pk)
     return render(request, 'client/interaction_detail.html', {'interaction': interaction})
@@ -55,7 +54,7 @@ def contact_detail(request, pk):
 
 def create_interaction(request):
     """
-    Создает новое взаимодействие и сохраняет его в базе данных.
+    Создает новую заявку и сохраняет ее в базе данных.
     """
     if request.method == 'POST':
         form = InteractionForm(request.POST)
@@ -95,7 +94,6 @@ def property_request_create(request, property_id):
     return render(request, 'client/property_request_form.html', {'form': form})
 
 
-@user_passes_test(lambda u: u.is_authenticated)
 def feedback_create(request):
     """
     Создает новый отзыв и сохраняет его в базе данных.

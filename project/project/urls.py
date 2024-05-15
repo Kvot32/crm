@@ -26,11 +26,9 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('auth/', include('profile.urls')),
     path('client/', include('client.urls')),
+    path('deal/', include('deal.urls')),
 ]
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns.extend(
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-)
-urlpatterns.extend(
-    static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-)
+# urlpatterns += staticfiles(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

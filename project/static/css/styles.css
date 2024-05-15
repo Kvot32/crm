@@ -1,0 +1,62 @@
+/* Set the background color of the body */
+body {
+  background-color: #f0f0f0;
+}
+
+/* Set the font family and size for the table headers */
+th {
+  font-family: Arial, sans-serif;
+  font-size: 1.2em;
+  color: #333;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Set the font family and size for the table cells */
+td {
+  font-family: Georgia, serif;
+  font-size: 1.1em;
+  color: #666;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Set the width and padding of the container */
+.container {
+  width: 80%;
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+/* Set the table to take up the full width of the container */
+.container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Set the margin and padding of the table headers */
+.container thead th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Set the margin and padding of the table cells */
+.container tbody td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Set the hover effect for the links */
+.container a {
+  color: #0088cc;
+  text-decoration: none;
+}
+
+.container a:hover {
+  text-decoration: underline;
+}

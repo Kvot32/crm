@@ -1,0 +1,42 @@
+{% extends 'deal/base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Deal
+{% endblock %}
+
+{% block content %}
+    <h1>Create Deal</h1>
+    <form method="post" enctype="multipart/form-data" class="styled-form">
+        {% csrf_token %}
+        <table>
+            <tbody>
+            <tr>
+                <th><label for="id_stage">Stage:</label></th>
+                <td>{{ form.stage }}</td>
+            </tr>
+            <tr>
+                <th><label for="id_stage">Client:</label></th>
+                <td>{{ form.client }}</td>
+            </tr>
+            <tr>
+                <th><label for="id_stage">Description:</label></th>
+                <td>{{ form.description }}</td>
+            </tr>
+            <tr>
+                <th><label for="id_documents">Documents:</label></th>
+                <td>{{ form.documents }}</td>
+            </tr>
+            <tr>
+                <th><label for="id_assigned_to">Assigned To:</label></th>
+                <td>{{ form.assigned_to }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Create Deal</button>
+    </form>
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}

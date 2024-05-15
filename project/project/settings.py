@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'deal',
 ]
 
 MIDDLEWARE = [
@@ -136,12 +137,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
+STATIC_URL = '/static/'  # URL для статических файлов
+STATICFILES_DIRS = [     # Папки с пользовательскими статическими файлами
+    BASE_DIR / "static",  # Путь к папке со статическими файлами (например, 'your_project/static/')
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Папка, куда будут собраны статические файлы для развёртывания
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
